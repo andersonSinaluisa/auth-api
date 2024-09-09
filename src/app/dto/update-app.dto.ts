@@ -1,4 +1,10 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateAppDto } from './create-app.dto';
+import { IsString } from 'class-validator';
 
-export class UpdateAppDto extends PartialType(CreateAppDto) { }
+export class UpdateAppDto {
+  @IsString()
+  name: string;
+  @IsString()
+  description: string;
+  @IsString()
+  url: string;
+}

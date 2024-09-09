@@ -1,36 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { Prisma } from '@prisma/client';
+import { PermissionsRepository } from './repository/permission.repository';
+import { PermissionMapper } from './entities/mappers/permission.mapper';
+import { UpdatePermissionDto } from './dto/update-permission.dto';
+import { CreatePermissionDto } from './dto/create-permission.dto';
 
 @Injectable()
 export class PermissionsService {
-  constructor(private readonly prismaService: PrismaService) { }
-  create(createPermissionDto: Prisma.PermissionCreateInput) {
-    return this.prismaService.permission.create({
-      data: createPermissionDto,
-    });
+  constructor(private readonly prismaService: PermissionsRepository) { }
+  create(createPermissionDto: CreatePermissionDto) {
+    return this.prismaService.create(
+      PermissionMapper.toEntity(createPermissionDto),
+    );
   }
 
   findAll() {
-    return this.prismaService.permission.findMany();
+    return this.prismaService.findAll();
   }
 
   findOne(id: number) {
-    return this.prismaService.permission.findUnique({
-      where: { id },
-    });
+    return this.prismaService.findOne(id);
   }
 
-  update(id: number, updatePermissionDto: Prisma.PermissionUpdateInput) {
-    return this.prismaService.permission.update({
-      where: { id },
-      data: updatePermissionDto,
-    });
+  update(id: number, updatePermissionDto: UpdatePermissionDto) {
+    return this.prismaService.update(+id, updatePermissionDto);
   }
 
   remove(id: number) {
-    return this.prismaService.permission.delete({
-      where: { id },
-    });
+    return this.prismaService.remove(+id);
   }
 }

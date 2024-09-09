@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAppDto } from './dto/create-app.dto';
 import { UpdateAppDto } from './dto/update-app.dto';
+import { AppRepository } from './repository/app.repository';
 
 @Injectable()
 export class AppService {
+  constructor(private readonly appRepository: AppRepository) { }
   create(createAppDto: CreateAppDto) {
-    return 'This action adds a new app';
+    return this.appRepository.create(createAppDto);
   }
 
   findAll() {
