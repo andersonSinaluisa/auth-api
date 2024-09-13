@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserRequest } from './dto/user.create.dto';
 import { UserRequestUpdate } from './dto/user.update.dto';
 import { UserRepository } from './repository/user.repository';
 import { UserMapper } from './entities/mappers/user.mapper';
 import { orderByFormat } from 'src/shared/utils/orderby-format';
 import { RoleRepository } from 'src/role/repository/role.repository';
+import * as bcrypt from 'bcrypt';
+import { SALT_OR_ROUNDS } from 'src/utils/config';
 
 @Injectable()
 export class UsersService {
@@ -15,8 +17,17 @@ export class UsersService {
   async create(createUserDto: UserRequest) {
     const role = await this.roleRepository.findOne(createUserDto.role_id);
     if (!role) {
-      throw new Error('Rol No encontrado');
+      throw new BadRequestException('Role not found');
     }
+
+    const exist = await this.repository.findByEmail(createUserDto.email);
+    if (exist != null) {
+      throw new BadRequestException('El correo ya está en uso');
+    }
+    createUserDto.password = await bcrypt.hash(
+      createUserDto.password,
+      SALT_OR_ROUNDS,
+    );
 
     const res = await this.repository.create(
       UserMapper.toEntity(createUserDto),
@@ -47,36 +58,27 @@ export class UsersService {
         createdAt: orderByFormat(orderBy, 'createdAt'),
       },
       where: {
-        OR: [
-          {
-            last_name: {
-              contains: search,
-            },
-          },
-          {
-            email: {
-              contains: search,
-            },
-          },
-          {
-            first_name: {
-              contains: search,
-            },
-          },
-          {
-            address: {
-              contains: search,
-            },
-          },
-        ],
+        last_name: {
+          contains: search,
+        },
+        email: {
+          contains: search,
+        },
+        first_name: {
+          contains: search,
+        },
+        address: {
+          contains: search,
+        },
       },
     });
-    return {
-      data: res.data.map((user) => UserMapper.toResponse(user)),
-      meta: res.meta,
-    };
+    return res;
   }
 
+  async findByEmail(email: string) {
+    const res = await this.repository.findByEmail(email);
+    return UserMapper.toResponse(res);
+  }
   async findOne(id: number) {
     const res = await this.repository.findOne(id);
     return UserMapper.toResponse(res);

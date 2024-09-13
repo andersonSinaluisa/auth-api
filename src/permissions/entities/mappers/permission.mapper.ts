@@ -9,6 +9,11 @@ export class PermissionMapper {
       name: permission.name,
       createdAt: new Date(),
       updatedAt: new Date(),
+      app: {
+        connect: {
+          id: permission.appId,
+        },
+      },
     } as Prisma.PermissionCreateInput;
   }
 

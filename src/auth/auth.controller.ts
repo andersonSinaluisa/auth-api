@@ -1,35 +1,16 @@
-import {
-  Controller,
-  Get,
-  HttpStatus,
-  Req,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { GoogleOauthGuard } from './guards/google-oauth.guard';
+import { AuthRequest } from './dto/auth-request';
+import { Public } from './auth.decorator';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) { }
 
-  @Get('google')
-  @UseGuards(GoogleOauthGuard)
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  async auth() { }
 
-  @Get('google/callback')
-  @UseGuards(GoogleOauthGuard)
-  async googleAuthCallback(@Req() req, @Res() res: Response) {
-    const token = await this.authService.signIn(req.user);
-
-    res.cookie('access_token', token, {
-      maxAge: 2592000000,
-      sameSite: true,
-      secure: false,
-    });
-
-    return res.status(HttpStatus.OK);
+  @Public()
+  @Post('login')
+  signIn(@Body() signInDto: AuthRequest) {
+    return this.authService.signIn(signInDto.email, signInDto.password);
   }
 }

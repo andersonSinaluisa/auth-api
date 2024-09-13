@@ -8,7 +8,6 @@ import { RoleModule } from './role/role.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { AppModule as App } from './app/app.module';
 import { AuthModule } from './auth/auth.module';
-
 @Module({
   imports: [UsersModule, SharedModule, RoleModule, PermissionsModule, App, AuthModule],
   controllers: [AppController],

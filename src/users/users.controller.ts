@@ -11,8 +11,11 @@ import {
 import { UsersService } from './users.service';
 import { UserRequest } from './dto/user.create.dto';
 import { UserRequestUpdate } from './dto/user.update.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { FindAllQueryDto } from 'src/utils/query-params';
 
 @Controller('users')
+@ApiTags('User')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
@@ -22,12 +25,8 @@ export class UsersController {
   }
 
   @Get()
-  findAll(
-    @Query('page') page: number,
-    @Query('perPage') perPage: number,
-    @Query('search') search?: string,
-    @Query('orderBy') orderBy?: string[],
-  ) {
+  findAll(@Query() query: FindAllQueryDto) {
+    const { page, perPage, search, orderBy } = query;
     return this.usersService.findMany(page, perPage, search, orderBy);
   }
 

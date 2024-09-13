@@ -44,7 +44,7 @@ model Session {
   UserAgent String
 }
 
-model App{
+model AppClient{
   id    Int     @default(autoincrement()) @id
   name String
   description String
@@ -71,5 +71,5 @@ model Permission {
   updatedAt DateTime @updatedAt
   roles     Role[]
   appId    Int
-  app      App      @relation(fields: [appId], references: [id])
+  app      AppClient      @relation(fields: [appId], references: [id])
 }

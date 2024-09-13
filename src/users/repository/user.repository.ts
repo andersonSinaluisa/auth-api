@@ -56,6 +56,15 @@ export class UserRepository {
     return user;
   }
 
+  async findByEmail(email: string) {
+    const user = await this.prismaService.user.findFirst({
+      where: {
+        email,
+      },
+    });
+    return user;
+  }
+
   async update(
     id: number,
     user: Prisma.UserUncheckedUpdateInput,

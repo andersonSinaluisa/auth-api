@@ -1,65 +1,33 @@
-import {
-    BadRequestException,
-    Injectable,
-    InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { UserRepository } from 'src/users/repository/user.repository';
+import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { generateFromEmail } from 'unique-username-generator';
-import { User } from '../users/entities/user.entity';
-import { RegisterUserDto } from './dtos/auth.dto';
+import { UserMapper } from 'src/users/entities/mappers/user.mapper';
+import { AuthResponse } from './dto/auth-response';
+
 @Injectable()
 export class AuthService {
-    constructor(
-        private jwtService: JwtService,
-        @InjectRepository(User) private userRepository: Repository<User>,
-    ) { }
+  constructor(
+    private usersService: UserRepository,
+    private jwtService: JwtService,
+  ) { }
 
-    generateJwt(payload) {
-        return this.jwtService.sign(payload);
+  async signIn(username: string, pass: string): Promise<any> {
+    const user = await this.usersService.findByEmail(username);
+
+    const isMatch = await bcrypt.compare(pass, user?.password);
+    if (!isMatch) {
+      throw new UnauthorizedException();
     }
-
-    async signIn(user) {
-        if (!user) {
-            throw new BadRequestException('Unauthenticated');
-        }
-
-        const userExists = await this.findUserByEmail(user.email);
-
-        if (!userExists) {
-            return this.registerUser(user);
-        }
-
-        return this.generateJwt({
-            sub: userExists.id,
-            email: userExists.email,
-        });
-    }
-
-    async registerUser(user: RegisterUserDto) {
-        try {
-            const newUser = this.userRepository.create(user);
-            newUser.username = generateFromEmail(user.email, 5);
-
-            await this.userRepository.save(newUser);
-
-            return this.generateJwt({
-                sub: newUser.id,
-                email: newUser.email,
-            });
-        } catch {
-            throw new InternalServerErrorException();
-        }
-    }
-
-    async findUserByEmail(email) {
-        const user = await this.userRepository.findOne({ email });
-
-        if (!user) {
-            return null;
-        }
-
-        return user;
-    }
+    const payload = {
+      sub: user.id,
+      username: user.email,
+      role: user.role_id,
+      iss: new Date(),
+    };
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+      data: UserMapper.toResponse(user),
+    } as AuthResponse;
+  }
 }

@@ -6,12 +6,16 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateAppDto } from './dto/create-app.dto';
 import { UpdateAppDto } from './dto/update-app.dto';
+import { FindAllQueryDto } from 'src/utils/query-params';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('app')
+@ApiTags('App')
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
@@ -21,8 +25,9 @@ export class AppController {
   }
 
   @Get()
-  findAll() {
-    return this.appService.findAll();
+  findAll(@Query() query: FindAllQueryDto) {
+    const { page, perPage, search, orderBy } = query;
+    return this.appService.findAll(page, perPage, search, orderBy);
   }
 
   @Get(':id')

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateAppDto } from './dto/create-app.dto';
 import { UpdateAppDto } from './dto/update-app.dto';
 import { AppRepository } from './repository/app.repository';
+import { orderByFormat } from 'src/shared/utils/orderby-format';
 
 @Injectable()
 export class AppService {
@@ -10,19 +11,41 @@ export class AppService {
     return this.appRepository.create(createAppDto);
   }
 
-  findAll() {
-    return `This action returns all app`;
+  findAll(page: number, perPage: number, search?: string, orderBy?: string[]) {
+    return this.appRepository.findAll({
+      orderBy: {
+        description: orderByFormat(orderBy, 'description'),
+        url: orderByFormat(orderBy, 'url'),
+        name: orderByFormat(orderBy, 'name'),
+      },
+      page: page,
+      perPage: perPage,
+      where: {
+        name: {
+          contains: search,
+        },
+      },
+    });
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} app`;
+    return this.appRepository.findOne({
+      id: id,
+    });
   }
 
   update(id: number, updateAppDto: UpdateAppDto) {
-    return `This action updates a #${id} app`;
+    return this.appRepository.update({
+      data: updateAppDto,
+      where: {
+        id: id,
+      },
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} app`;
+    return this.appRepository.remove({
+      id: id,
+    });
   }
 }
