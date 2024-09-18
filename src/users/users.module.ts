@@ -6,7 +6,7 @@ import { SharedModule } from 'src/shared/shared.module';
 import { RoleModule } from 'src/role/role.module';
 import { RoleRepository } from 'src/role/repository/role.repository';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @Module({
   controllers: [UsersController],
@@ -16,7 +16,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
     RoleRepository,
     {
       provide: APP_GUARD,
-      useClass: AuthGuard,
+      useClass: JwtAuthGuard,
     },
   ],
   imports: [SharedModule, RoleModule],

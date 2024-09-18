@@ -7,7 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from 'src/utils/config';
 import { SharedModule } from 'src/shared/shared.module';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './auth.guard';
+import { JwtAuthGuard } from './auth.guard';
 
 @Module({
   controllers: [AuthController],
@@ -16,7 +16,7 @@ import { AuthGuard } from './auth.guard';
     UserRepository,
     {
       provide: APP_GUARD,
-      useClass: AuthGuard,
+      useClass: JwtAuthGuard,
     },
   ],
   imports: [
