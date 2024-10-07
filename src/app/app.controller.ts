@@ -13,6 +13,7 @@ import { CreateAppDto } from './dto/create-app.dto';
 import { UpdateAppDto } from './dto/update-app.dto';
 import { FindAllQueryDto } from 'src/utils/query-params';
 import { ApiTags } from '@nestjs/swagger';
+import { Public } from 'src/auth/auth.decorator';
 
 @Controller('app')
 @ApiTags('App')
@@ -23,7 +24,6 @@ export class AppController {
   create(@Body() createAppDto: CreateAppDto) {
     return this.appService.create(createAppDto);
   }
-
   @Get()
   findAll(@Query() query: FindAllQueryDto) {
     const { page, perPage, search, orderBy } = query;

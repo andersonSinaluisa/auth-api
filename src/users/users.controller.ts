@@ -29,7 +29,6 @@ export class UsersController {
     const { page, perPage, search, orderBy } = query;
     return this.usersService.findMany(page, perPage, search, orderBy);
   }
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);

@@ -10,14 +10,16 @@ export class AuthService {
   constructor(
     private usersService: UserRepository,
     private jwtService: JwtService,
-  ) { }
+  ) {}
 
   async signIn(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findByEmail(username);
-
+    if (!user) {
+      throw new UnauthorizedException('Usuario y/o contraseña inválidos');
+    }
     const isMatch = await bcrypt.compare(pass, user?.password);
     if (!isMatch) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Usuario y/o contraseña inválidos');
     }
     const payload = {
       sub: user.id,
