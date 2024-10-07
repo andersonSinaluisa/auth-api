@@ -12,14 +12,14 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(username: string, pass: string): Promise<any> {
+  async signIn(username: string, pass: string): Promise<AuthResponse> {
     const user = await this.usersService.findByEmail(username);
-    if (!user) {
-      throw new UnauthorizedException('Usuario y/o contraseña inválidos');
+    if (user == null) {
+      throw new UnauthorizedException('Usuario o contraseña incorrectos');
     }
     const isMatch = await bcrypt.compare(pass, user?.password);
     if (!isMatch) {
-      throw new UnauthorizedException('Usuario y/o contraseña inválidos');
+      throw new UnauthorizedException('Usuario o contraseña incorrectos');
     }
     const payload = {
       sub: user.id,

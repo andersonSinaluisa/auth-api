@@ -6,7 +6,7 @@ import { PermissionsRepository } from './repository/permission.repository';
 import { AppRepository } from 'src/app/repository/app.repository';
 import { AppModule } from 'src/app/app.module';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @Module({
   controllers: [PermissionsController],
@@ -16,10 +16,10 @@ import { AuthGuard } from 'src/auth/auth.guard';
     AppRepository,
     {
       provide: APP_GUARD,
-      useClass: AuthGuard,
+      useClass: JwtAuthGuard,
     },
   ],
   imports: [SharedModule, AppModule],
   exports: [PermissionsRepository],
 })
-export class PermissionsModule { }
+export class PermissionsModule {}
