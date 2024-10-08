@@ -20,6 +20,6 @@ import { JwtAuthGuard } from 'src/auth/auth.guard';
     },
   ],
   imports: [SharedModule, AppModule],
-  exports: [PermissionsRepository],
+  exports: [PermissionsRepository, PermissionsService],
 })
 export class PermissionsModule {}

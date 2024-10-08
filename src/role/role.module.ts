@@ -16,7 +16,7 @@ import { JwtAuthGuard } from 'src/auth/auth.guard';
       useClass: JwtAuthGuard,
     },
   ],
-  exports: [RoleRepository],
+  exports: [RoleRepository, RoleService],
   imports: [SharedModule],
 })
 export class RoleModule { }

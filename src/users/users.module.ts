@@ -20,6 +20,6 @@ import { JwtAuthGuard } from 'src/auth/auth.guard';
     },
   ],
   imports: [SharedModule, RoleModule],
-  exports: [UserRepository],
+  exports: [UserRepository, UsersService],
 })
 export class UsersModule { }

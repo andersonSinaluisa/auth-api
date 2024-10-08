@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
@@ -8,9 +8,36 @@ import { RoleModule } from './role/role.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { AppModule as App } from './app/app.module';
 import { AuthModule } from './auth/auth.module';
+import { MainMiddleware } from './main.middleware';
+import { CreateUserCommand } from './commands/create-user.command';
+import { CreateRolCommand } from './commands/create-rol.command';
+import { UsersService } from './users/users.service';
+import { RoleService } from './role/role.service';
+import { PermissionsService } from './permissions/permissions.service';
+import { CommandRunnerModule } from 'nest-commander';
 @Module({
-  imports: [UsersModule, SharedModule, RoleModule, PermissionsModule, App, AuthModule],
+  imports: [
+    CommandRunnerModule,
+    UsersModule,
+    SharedModule,
+    RoleModule,
+    PermissionsModule,
+    App,
+    AuthModule,
+  ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [
+    AppService,
+    PrismaService,
+    PermissionsService,
+    UsersService,
+    RoleService,
+    CreateUserCommand,
+    CreateRolCommand,
+  ],
 })
-export class AppModule { }
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(MainMiddleware).forRoutes('*');
+  }
+}
