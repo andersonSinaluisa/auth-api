@@ -5,7 +5,7 @@ import { RoleService } from 'src/role/role.service';
 import { PermissionsService } from 'src/permissions/permissions.service';
 
 @Injectable()
-@Command({ name: 'create-rol', description: 'Crea un rol' })
+@Command({ name: 'exec-create-rol', description: 'Crea un rol' })
 export class CreateRolCommand extends CommandRunner {
   constructor(
     private roleService: RoleService,
@@ -15,7 +15,6 @@ export class CreateRolCommand extends CommandRunner {
   }
 
   async run(): Promise<void> {
-    const permissions = await this.permissionsService.findAll();
     const answers = await inquirer.prompt([
       {
         type: 'input',
@@ -26,12 +25,6 @@ export class CreateRolCommand extends CommandRunner {
         type: 'input',
         name: 'description',
         message: 'Introduce la descripción del rol:',
-      },
-      {
-        type: 'checkbox',
-        name: 'permissions',
-        message: 'Selecciona los permisos del rol:',
-        choices: permissions.map((permission) => permission.name),
       },
     ]);
     // Usa el servicio para crear el rol

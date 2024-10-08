@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AES } from 'crypto-js';
+import { AES, enc } from 'crypto-js';
 @Injectable()
 export class MainMiddleware {
   use(req, res, next) {
@@ -9,7 +9,12 @@ export class MainMiddleware {
       if (Object.prototype.hasOwnProperty.call(_data, key)) {
         const element = _data[key];
         if (typeof element == 'string') {
-          _data[key] = AES.decrypt(element, process.env.KEY_ENCRYPT).toString();
+          const decrypted = AES.decrypt(
+            element,
+            process.env.KEY_ENCRYPT,
+          ).toString(enc.Utf8);
+
+          _data[key] = decrypted;
         }
       }
     }

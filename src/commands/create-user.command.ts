@@ -5,7 +5,10 @@ import inquirer from 'inquirer';
 import { RoleService } from 'src/role/role.service';
 
 @Injectable()
-@Command({ name: 'create-user', description: 'Crea un usuario admin inicial' })
+@Command({
+  name: 'exec-create-user',
+  description: 'Crea un usuario admin inicial',
+})
 export class CreateUserCommand extends CommandRunner {
   constructor(
     private userService: UsersService,
@@ -49,6 +52,12 @@ export class CreateUserCommand extends CommandRunner {
         message: 'Introduce el apellido:',
       },
     ]);
+
+    const role = roles.find((role) => role.name === answers.role);
+    if (!role) {
+      console.error('Rol no encontrado');
+      return;
+    }
     // Usa el servicio para crear el usuario
     await this.userService.create({
       email: answers.email,
@@ -57,7 +66,7 @@ export class CreateUserCommand extends CommandRunner {
       last_name: answers.lastName,
       address: '',
       phone: '',
-      role_id: 1,
+      role_id: role.id,
     });
 
     console.log('Usuario creado con éxito');
