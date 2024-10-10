@@ -7,3 +7,12 @@ export class AuthRequest {
   @IsString()
   password: string;
 }
+
+export class ForgotPasswordDto {
+  email: string;
+  link_password: string;
+}
+export class ResetPasswordDto {
+  token: string;
+  newPassword: string;
+}

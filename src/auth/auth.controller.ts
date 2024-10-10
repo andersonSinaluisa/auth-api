@@ -1,6 +1,10 @@
 import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthRequest } from './dto/auth-request';
+import {
+  AuthRequest,
+  ForgotPasswordDto,
+  ResetPasswordDto,
+} from './dto/auth-request';
 import { Public } from './auth.decorator';
 import { Response } from 'express';
 @Controller('auth')
@@ -23,5 +27,17 @@ export class AuthController {
     });
 
     return res.status(HttpStatus.OK).json(response.data);
+  }
+
+  @Public()
+  @Post('forgot-password')
+  async forgotPassword(@Body() data: ForgotPasswordDto) {
+    return this.authService.forgotPassword(data.email, data.link_password);
+  }
+
+  @Public()
+  @Post('reset-password')
+  async resetPassword(@Body() data: ResetPasswordDto) {
+    return this.authService.resetPassword(data);
   }
 }
