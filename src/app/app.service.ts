@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateAppDto } from './dto/create-app.dto';
 import { UpdateAppDto } from './dto/update-app.dto';
 import { AppRepository } from './repository/app.repository';
-import { orderByFormat } from 'src/shared/utils/orderby-format';
+import { orderByFormat } from '../shared/utils/orderby-format';
 
 @Injectable()
 export class AppService {

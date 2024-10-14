@@ -1,17 +1,20 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserRepository } from 'src/users/repository/user.repository';
+import { UserRepository } from '../users/repository/user.repository';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { UserMapper } from 'src/users/entities/mappers/user.mapper';
+import { UserMapper } from '../users/entities/mappers/user.mapper';
 import { AuthResponse } from './dto/auth-response';
-import { SALT_OR_ROUNDS } from 'src/utils/config';
+import { SALT_OR_ROUNDS } from '../utils/config';
 import { ResetPasswordDto } from './dto/auth-request';
+import { EventsService } from 'src/events/events.service';
+import { TOPIC_MESSAGE_RESET_PASSWORD } from 'src/const';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UserRepository,
     private jwtService: JwtService,
+    private events: EventsService,
   ) {}
 
   async signIn(username: string, pass: string): Promise<AuthResponse> {
@@ -48,8 +51,17 @@ export class AuthService {
 
     // Enviar correo con el token
     const resetPasswordUrl = `${link_password}${resetToken}`;
-    //TODO: implementar envio de correo
-    console.log(resetPasswordUrl);
+
+    const payload = {
+      app_code: 'auth-api',
+      to: email,
+      subject: 'Recuperar contraseña',
+      template: 'reset-password',
+      context: {
+        resetPasswordUrl: resetPasswordUrl,
+      },
+    };
+    this.events.sendMessage(TOPIC_MESSAGE_RESET_PASSWORD, payload);
     return {
       message: 'Enviado correctamente',
     };

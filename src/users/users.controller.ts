@@ -12,7 +12,7 @@ import { UsersService } from './users.service';
 import { UserRequest } from './dto/user.create.dto';
 import { UserRequestUpdate } from './dto/user.update.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { FindAllQueryDto } from 'src/utils/query-params';
+import { FindAllQueryDto } from '../utils/query-params';
 
 @Controller('users')
 @ApiTags('User')

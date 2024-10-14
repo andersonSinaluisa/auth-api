@@ -3,10 +3,10 @@ import { UserRequest } from './dto/user.create.dto';
 import { UserRequestUpdate } from './dto/user.update.dto';
 import { UserRepository } from './repository/user.repository';
 import { UserMapper } from './entities/mappers/user.mapper';
-import { orderByFormat } from 'src/shared/utils/orderby-format';
-import { RoleRepository } from 'src/role/repository/role.repository';
+import { orderByFormat } from '../shared/utils/orderby-format';
+import { RoleRepository } from '../role/repository/role.repository';
 import * as bcrypt from 'bcrypt';
-import { SALT_OR_ROUNDS } from 'src/utils/config';
+import { SALT_OR_ROUNDS } from '../utils/config';
 
 @Injectable()
 export class UsersService {

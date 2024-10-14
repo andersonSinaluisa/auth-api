@@ -15,6 +15,7 @@ import { UsersService } from './users/users.service';
 import { RoleService } from './role/role.service';
 import { PermissionsService } from './permissions/permissions.service';
 import { CommandRunnerModule } from 'nest-commander';
+import { EventsModule } from './events/events.module';
 @Module({
   imports: [
     CommandRunnerModule,
@@ -24,6 +25,7 @@ import { CommandRunnerModule } from 'nest-commander';
     PermissionsModule,
     App,
     AuthModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,8 +1,8 @@
 import { Command, CommandRunner } from 'nest-commander';
 import { Injectable } from '@nestjs/common';
 import inquirer from 'inquirer';
-import { RoleService } from 'src/role/role.service';
-import { PermissionsService } from 'src/permissions/permissions.service';
+import { RoleService } from '../role/role.service';
+import { PermissionsService } from '../permissions/permissions.service';
 
 @Injectable()
 @Command({ name: 'exec-create-rol', description: 'Crea un rol' })

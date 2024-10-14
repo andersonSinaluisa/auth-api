@@ -6,7 +6,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { jwtConstants } from 'src/utils/config';
+import { jwtConstants } from '../utils/config';
 import { IS_PUBLIC_KEY } from './auth.decorator';
 import { AuthGuard } from '@nestjs/passport';
 

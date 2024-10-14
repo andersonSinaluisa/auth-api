@@ -11,14 +11,13 @@ import {
 import { AppService } from './app.service';
 import { CreateAppDto } from './dto/create-app.dto';
 import { UpdateAppDto } from './dto/update-app.dto';
-import { FindAllQueryDto } from 'src/utils/query-params';
+import { FindAllQueryDto } from '../utils/query-params';
 import { ApiTags } from '@nestjs/swagger';
-import { Public } from 'src/auth/auth.decorator';
 
 @Controller('app')
 @ApiTags('App')
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  constructor(private readonly appService: AppService) {}
 
   @Post()
   create(@Body() createAppDto: CreateAppDto) {

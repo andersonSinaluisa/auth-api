@@ -3,7 +3,7 @@ import { PermissionsRepository } from './repository/permission.repository';
 import { PermissionMapper } from './entities/mappers/permission.mapper';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { CreatePermissionDto } from './dto/create-permission.dto';
-import { AppRepository } from 'src/app/repository/app.repository';
+import { AppRepository } from '../app/repository/app.repository';
 
 @Injectable()
 export class PermissionsService {

@@ -1,5 +1,5 @@
 import { AppClient, Prisma } from '@prisma/client';
-import { CreateAppDto } from 'src/app/dto/create-app.dto';
+import { CreateAppDto } from '../../dto/create-app.dto';
 
 export class AppMapper {
   static toEntity(data: CreateAppDto) {

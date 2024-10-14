@@ -1,8 +1,8 @@
 import { Command, CommandRunner } from 'nest-commander';
 import { Injectable } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from '../users/users.service';
 import inquirer from 'inquirer';
-import { RoleService } from 'src/role/role.service';
+import { RoleService } from '../role/role.service';
 
 @Injectable()
 @Command({

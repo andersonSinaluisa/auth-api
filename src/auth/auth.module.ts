@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { UsersModule } from 'src/users/users.module';
-import { UserRepository } from 'src/users/repository/user.repository';
+import { UsersModule } from '../users/users.module';
+import { UserRepository } from '../users/repository/user.repository';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from 'src/utils/config';
-import { SharedModule } from 'src/shared/shared.module';
+import { jwtConstants } from '../utils/config';
+import { SharedModule } from '../shared/shared.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth.guard';
 
