@@ -4,12 +4,13 @@ import {
   AuthRequest,
   ForgotPasswordDto,
   ResetPasswordDto,
+  VerifyTokenDto,
 } from './dto/auth-request';
 import { Public } from './auth.decorator';
 import { Response } from 'express';
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   @Public()
   @Post('login')
@@ -39,5 +40,11 @@ export class AuthController {
   @Post('reset-password')
   async resetPassword(@Body() data: ResetPasswordDto) {
     return this.authService.resetPassword(data);
+  }
+
+  @Public()
+  @Post('validate-token')
+  async verifyToken(@Body() data: VerifyTokenDto) {
+    return this.authService.verifyToken(data.token);
   }
 }

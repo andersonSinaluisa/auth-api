@@ -6,8 +6,8 @@ import { UserMapper } from '../users/entities/mappers/user.mapper';
 import { AuthResponse } from './dto/auth-response';
 import { SALT_OR_ROUNDS } from '../utils/config';
 import { ResetPasswordDto } from './dto/auth-request';
-import { EventsService } from 'src/events/events.service';
-import { TOPIC_MESSAGE_RESET_PASSWORD } from 'src/const';
+import { EventsService } from '../events/events.service';
+import { TOPIC_MESSAGE_RESET_PASSWORD } from '../const';
 
 @Injectable()
 export class AuthService {
@@ -15,10 +15,11 @@ export class AuthService {
     private usersService: UserRepository,
     private jwtService: JwtService,
     private events: EventsService,
-  ) {}
+  ) { }
 
   async signIn(username: string, pass: string): Promise<AuthResponse> {
     const user = await this.usersService.findByEmail(username);
+    console.log(username, pass);
     if (user == null) {
       throw new UnauthorizedException('Usuario o contraseña incorrectos');
     }
@@ -45,8 +46,8 @@ export class AuthService {
 
     // Generar un token de restablecimiento (puede ser un JWT o algo personalizado)
     const resetToken = this.jwtService.sign(
-      { userId: user.id },
-      { secret: link_password, expiresIn: '1h' },
+      { userId: user.id, link: link_password },
+      { secret: process.env.JWT_SECRET, expiresIn: '1h' },
     );
 
     // Enviar correo con el token
@@ -59,6 +60,7 @@ export class AuthService {
       template: 'reset-password',
       context: {
         resetPasswordUrl: resetPasswordUrl,
+        firstName: user.first_name,
       },
     };
     this.events.sendMessage(TOPIC_MESSAGE_RESET_PASSWORD, payload);
@@ -89,5 +91,20 @@ export class AuthService {
     });
 
     return { message: 'Password has been updated' };
+  }
+
+  async verifyToken(token: string): Promise<any> {
+    // Verificar el token
+    const payload = this.jwtService.verify(token, {
+      secret: process.env.JWT_SECRET,
+    });
+
+    // Encontrar al usuario por el id del token
+    const user = await this.usersService.findOne(payload.userId);
+    if (!user) {
+      throw new Error('Enlace no válido');
+    }
+
+    return { message: 'Token is valid' };
   }
 }

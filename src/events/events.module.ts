@@ -13,11 +13,18 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
             clientId: process.env.KAFKA_CLIENT_ID,
             brokers: [process.env.KAFKA_HOST],
           },
+          consumer: {
+            groupId: 'auth-group-id',
+            retry: {
+              retries: 10,
+              initialRetryTime: 300,
+            },
+          },
         },
       },
     ]),
   ],
   providers: [EventsService],
-  exports: [EventsService],
+  exports: [EventsService, ClientsModule],
 })
-export class EventsModule {}
+export class EventsModule { }

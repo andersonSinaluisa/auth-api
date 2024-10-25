@@ -8,6 +8,8 @@ import { jwtConstants } from '../utils/config';
 import { SharedModule } from '../shared/shared.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth.guard';
+import { EventsModule } from '../events/events.module';
+import { EventsService } from '../events/events.service';
 
 @Module({
   controllers: [AuthController],
@@ -18,10 +20,12 @@ import { JwtAuthGuard } from './auth.guard';
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
+    EventsService,
   ],
   imports: [
     SharedModule,
     UsersModule,
+    EventsModule,
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
