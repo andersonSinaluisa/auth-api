@@ -1,0 +1,112 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "windows"]
+
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model User{
+  id    Int     @default(autoincrement()) @id
+  email String  @unique
+  password String 
+  first_name String 
+  last_name String
+  phone String
+  address String
+  role_id Int
+  deleted Boolean @default(false)
+  sessions Session[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  role Role @relation(fields: [role_id], references: [id])
+  logs Log[]
+}
+
+
+model Session {
+  id        Int      @default(autoincrement()) @id
+  token     String   @unique
+  userId    Int
+  deleted   Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ip       String
+  UserAgent String
+}
+
+model App{
+  id    Int     @default(autoincrement()) @id
+  name String
+  description String
+  url String
+  deleted Boolean @default(false)
+  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  permissions Permission[]
+
+}
+model Role {
+  id        Int        @default(autoincrement()) @id
+  name      String     
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  deleted   Boolean    @default(false)
+  deletedAt DateTime?
+  permissions Permission[]
+  users      User[]
+}
+
+model Permission {
+  id        Int      @default(autoincrement()) @id
+  name      String   
+  description String
+  code     String   
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deleted   Boolean  @default(false)
+  deletedAt DateTime?
+  roles     Role[]
+  appId    Int
+  app      App      @relation(fields: [appId], references: [id])
+}
+
+
+model Log{
+  id    Int     @default(autoincrement()) @id
+  action_id Int
+  user_id Int
+  description String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deleted Boolean @default(false)
+  deletedAt DateTime?
+  user User @relation(fields: [user_id], references: [id])
+  action LogAction @relation(fields: [action_id], references: [id])
+}
+
+
+model LogAction {
+  id        Int      @default(autoincrement()) @id
+  name      String   
+  description String
+  code     String   
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deleted   Boolean  @default(false)
+  deletedAt DateTime?
+  logs     Log[]
+}
