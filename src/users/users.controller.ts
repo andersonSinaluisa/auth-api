@@ -25,8 +25,8 @@ export class UsersController {
   findAll(
     @Query('page') page: number,
     @Query('perPage') perPage: number,
-    @Query('search') search: string,
-    @Query('orderBy') orderBy: string[],
+    @Query('search') search?: string,
+    @Query('orderBy') orderBy?: string[],
   ) {
     return this.usersService.findMany(page, perPage, search, orderBy);
   }

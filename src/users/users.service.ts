@@ -5,28 +5,47 @@ import { UserRepository } from './repository/user.repository';
 import { UserMapper } from './entities/mappers/user.mapper';
 import { orderByFormat } from 'src/shared/utils/orderby-format';
 import { RoleRepository } from 'src/role/repository/role.repository';
+import { encryptPassword, generatePassword } from 'src/shared/utils/passwordGenerator';
+import { hash, randomInt } from 'crypto';
+import { createCipheriv, randomBytes, scrypt } from 'crypto';
+import { EventsService } from 'src/kafka/events.service';
+import { USER_CREATED, USER_DELETED, USER_STATUS_CHANGED } from 'src/kafka/events';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly repository: UserRepository,
     private readonly roleRepository: RoleRepository,
+    private readonly kafkaService: EventsService,
   ) { }
   async create(createUserDto: UserRequest) {
     const role = await this.roleRepository.findOne(createUserDto.role_id);
     if (!role) {
       throw new Error('Rol No encontrado');
     }
-
+    const password = generatePassword(randomInt(20, 30));
+    console.log(password)
+    createUserDto.password = await encryptPassword(password);
     const res = await this.repository.create(
       UserMapper.toEntity(createUserDto),
     );
-    return UserMapper.toResponse(res);
+    const dto = UserMapper.toResponse(res);
+    this.kafkaService.sendMessage(USER_CREATED, JSON.stringify(dto));
+    return dto
   }
 
   async findAll() {
     const res = await this.repository.findAll();
     return res.map((user) => UserMapper.toResponse(user));
+  }
+
+  async findByEmail(email: string) {
+
+    const res = await this.repository.findByEmail(email);
+    if (!res) {
+      return null;
+    }
+    return res;
   }
 
   async findMany(
@@ -46,7 +65,7 @@ export class UsersService {
         id: orderByFormat(orderBy, 'id'),
         createdAt: orderByFormat(orderBy, 'createdAt'),
       },
-      where: {
+      where:search? {
         OR: [
           {
             last_name: {
@@ -69,10 +88,17 @@ export class UsersService {
             },
           },
         ],
+      }:{
+        AND: {
+          deleted: false,
+        },
       },
+      include:{
+        role: true,
+      }
     });
     return {
-      data: res.data.map((user) => UserMapper.toResponse(user)),
+      data: res.data.map((user) => UserMapper.toResponseInclude(user)),
       meta: res.meta,
     };
   }
@@ -87,11 +113,16 @@ export class UsersService {
       id,
       UserMapper.toEntityUpdate(updateUserDto),
     );
-    return UserMapper.toResponse(res);
+    const dto = UserMapper.toResponse(res);
+    this.kafkaService.sendMessage(USER_STATUS_CHANGED, JSON.stringify(dto));
+    return dto;
+
   }
 
   async remove(id: number) {
     const res = await this.repository.remove(id);
-    return UserMapper.toResponse(res);
+    const dto   = UserMapper.toResponse(res);
+    this.kafkaService.sendMessage(USER_DELETED, JSON.stringify(dto));
+    return dto;
   }
 }

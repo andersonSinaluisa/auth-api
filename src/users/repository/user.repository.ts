@@ -18,6 +18,15 @@ export class UserRepository {
     return newUser;
   }
 
+  async findByEmail(email: string): Promise<User | null> {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    return user;
+  }
+
   async findAll(): Promise<User[]> {
     const users = await this.prismaService.user.findMany();
     return users;
@@ -25,14 +34,16 @@ export class UserRepository {
   async findMany({
     where,
     orderBy,
+    include,
     page,
     perPage = 10,
   }: {
     where?: Prisma.UserWhereInput;
     orderBy?: Prisma.UserOrderByWithRelationInput;
+    include?: Prisma.UserInclude;
     page?: number;
     perPage?: number;
-  }): Promise<PaginatedResult<User>> {
+  }){
     const paginate: PaginateFunction = paginator({ perPage: perPage });
 
     return paginate(
@@ -40,6 +51,7 @@ export class UserRepository {
       {
         where,
         orderBy,
+        include
       },
       {
         page,

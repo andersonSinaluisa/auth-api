@@ -20,7 +20,14 @@ export class RoleRepository {
   }
 
   async findAll() {
-    const roles = await this.prismaService.role.findMany();
+    const roles = await this.prismaService.role.findMany({
+      where: {
+        deleted: false
+      },
+      include: {
+        permissions: true,
+      },
+    });
     return roles;
   }
 

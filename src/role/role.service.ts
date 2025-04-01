@@ -37,7 +37,9 @@ export class RoleService {
                   deleted: false
                 }
               }
-           : undefined,
+           : {
+              deleted: false,
+           },
         });
   }
 

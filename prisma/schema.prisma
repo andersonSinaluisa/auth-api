@@ -16,7 +16,6 @@ datasource db {
 }
 
 
-
 model User{
   id    Int     @default(autoincrement()) @id
   email String  @unique
@@ -31,20 +30,26 @@ model User{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   role Role @relation(fields: [role_id], references: [id])
+  is_active Boolean @default(true)
+  last_login DateTime?
   logs Log[]
 }
 
 
 model Session {
   id        Int      @default(autoincrement()) @id
-  token     String   @unique
+  session_id     String   @unique
   userId    Int
   deleted   Boolean  @default(false)
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  token     String? @default(uuid())
   ip       String
   UserAgent String
+  location String
+  device String
+  status String
 }
 
 model App{
@@ -109,4 +114,12 @@ model LogAction {
   deleted   Boolean  @default(false)
   deletedAt DateTime?
   logs     Log[]
+}
+
+
+model UserAzureAD{
+  id    Int     @default(autoincrement()) @id
+  email String  @unique
+  uid String  @unique
+
 }

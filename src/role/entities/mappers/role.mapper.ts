@@ -1,5 +1,6 @@
 import { Prisma, Role } from '@prisma/client';
 import { CreateRoleDto } from 'src/role/dto/create-role.dto';
+import { ReadRoleDto } from 'src/role/dto/read-role.dto';
 import { UpdateRoleDto } from 'src/role/dto/update-role.dto';
 
 export class RoleMapper {
@@ -18,12 +19,12 @@ export class RoleMapper {
     return {
       name: role.name,
       permissions: {
-        connect: role.permissions.map((id) => ({ id })),
+        set: role.permissions.map((id) => ({ id })),
       },
     } as Prisma.RoleUncheckedUpdateInput;
   }
 
-  static toDto(role: Role) {
+  static toDto(role: Role): ReadRoleDto {
     return {
       id: role.id,
       name: role.name,
