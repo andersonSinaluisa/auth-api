@@ -1,1 +1,6 @@
-export class CreateAppDto {}
+export class CreateAppDto {
+    name: string;
+    description: string;
+    url: string;
+
+}

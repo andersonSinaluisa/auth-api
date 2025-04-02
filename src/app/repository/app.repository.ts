@@ -13,7 +13,21 @@ export class AppRepository{
     }
 
     async findAll(){
-        return this.prismaService.app.findMany();
+        return this.prismaService.app.findMany({
+            select:{
+                _count:{
+                    select:{
+                        permissions: true
+                    }
+                },
+                id: true,
+                name: true,
+                description: true,
+                url: true,
+                createdAt: true,
+                updatedAt: true,
+            }
+        });
     }
 
     async findOne(id: number){
@@ -30,8 +44,10 @@ export class AppRepository{
     }
 
     async remove(id: number){
-        return this.prismaService.app.delete({
-            where: {id}
+        return this.prismaService.app.update({
+            where: {id},
+            data: {deletedAt: new Date(),
+                deleted: true}
         })
     }
 }

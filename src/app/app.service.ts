@@ -8,7 +8,15 @@ export class AppService {
 
   constructor(private readonly appRepository: AppRepository) { }
   create(createAppDto: CreateAppDto) {
-    return 'This action adds a new app';
+    return this.appRepository.create({
+      description: createAppDto.description,
+      name: createAppDto.name,
+      url: createAppDto.url,
+      createdAt: new Date(),
+      deleted: false,
+      deletedAt: null,
+      
+    });
   }
 
   findAll() {
@@ -16,14 +24,14 @@ export class AppService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} app`;
+    return this.appRepository.findOne(id);
   }
 
   update(id: number, updateAppDto: UpdateAppDto) {
-    return `This action updates a #${id} app`;
+    return this.appRepository.update(id, updateAppDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} app`;
+    return this.appRepository.remove(id);
   }
 }

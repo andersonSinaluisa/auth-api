@@ -1,5 +1,9 @@
+import { IsString } from "class-validator";
 
-export interface VerifyDto {
+export class VerifyDto {
+    @IsString()
     sessionId: string;
+    @IsString()
+    
     token: string;
 }

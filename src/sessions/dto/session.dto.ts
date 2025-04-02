@@ -1,3 +1,4 @@
+import { UserResponseDto } from "src/users/dto/user.read.dto";
 
 
 export class SessionDto {
@@ -12,4 +13,5 @@ export class SessionDto {
     location: string;
     device: string;
     status: string;
+    user?: UserResponseDto
 }

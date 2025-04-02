@@ -5,6 +5,10 @@ import { PaginateFunction, paginator } from "src/shared/utils/pagination";
 
 @Injectable()
 export class SessionRepository {
+    private readonly STATUS = {
+        ACTIVE: 'active',
+        INACTIVE: 'inactive',
+    };
     constructor(private prismaService: PrismaService) { }
 
 
@@ -20,11 +24,13 @@ export class SessionRepository {
         where,
         orderBy,
         page,
+        include,
         perPage = 10,
     }: {
         where?: Prisma.SessionWhereInput;
         orderBy?: Prisma.SessionOrderByWithRelationInput;
         page?: number;
+        include?: Prisma.SessionInclude;
         perPage?: number;
     }) {
         const paginate: PaginateFunction = paginator({ perPage: perPage });
@@ -34,7 +40,7 @@ export class SessionRepository {
             {
                 where,
                 orderBy,
-
+                include,
             },
             {
                 page,
@@ -64,7 +70,7 @@ export class SessionRepository {
             },
             data: {
                 updatedAt: new Date(),
-                deleted: true,
+                status: this.STATUS.INACTIVE
             },
         });
         return session;

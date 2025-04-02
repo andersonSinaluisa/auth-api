@@ -5,6 +5,7 @@ import { EventsService } from 'src/kafka/events.service';
 import { SESSION_TERMINATED } from 'src/kafka/events';
 import { Prisma } from '@prisma/client';
 import { randomUUID } from 'crypto';
+import { SessionMapper } from './entities/mappers/session.mapper';
 
 @Injectable()
 export class SessionsService {
@@ -31,12 +32,15 @@ export class SessionsService {
         perPage: number,
         search?: string,
         orderBy?: string[],) {
-        return this.sessionRepository.findMany({
+        const sessions = await this.sessionRepository.findMany({
             page,
             perPage,
             orderBy: {
                 createdAt: orderBy != undefined ? orderByFormat(orderBy, 'createdAt') : undefined,
                 status: orderBy != undefined ? orderByFormat(orderBy, 'status') : undefined,
+            },
+            include:{
+                user: true,
             },
             where: search
                 ? {
@@ -61,6 +65,11 @@ export class SessionsService {
                     deleted: false,
                 },
         });
+
+        return {
+            ...sessions,
+            data : sessions.data.map((ses)=>SessionMapper.toDto(ses)),
+        }
     }
 
 
