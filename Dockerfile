@@ -1,5 +1,5 @@
 # Etapa 1: Compilar la app
-FROM node:20-alpine AS builder
+FROM node:20 AS builder
 
 WORKDIR /app
 
