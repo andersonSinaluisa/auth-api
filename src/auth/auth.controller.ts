@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Req, Res } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -39,5 +39,30 @@ export class AuthController {
         const token = data.token;
         const result = await this.authService.verify(sessionId, token);
         return result;
+    }
+
+    @Delete('terminate/:id')
+    terminateSession(@Param('id') id: string) {
+        return this.authService.terminateSession(id);
+    }
+
+
+    @Post('logout')
+    async logout(@Req() req: Request, @Res() res: Response) {
+        const sessionId = req.cookies.sessionId;
+        const token = req.cookies.token;
+        await this.authService.terminateSession(sessionId);
+        res.clearCookie('sessionId');
+        res.clearCookie('token');
+        res.clearCookie('userId');
+        res.json({ message: 'Logged out successfully' });
+    }
+
+
+    @Post('profile')
+    async getProfile(@Req() req: Request, @Res() res: Response) {
+        
+        
+        
     }
 }

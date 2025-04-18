@@ -26,6 +26,9 @@ export class AppRepository{
                 url: true,
                 createdAt: true,
                 updatedAt: true,
+            },
+            where:{
+                deleted: false,
             }
         });
     }
