@@ -9,7 +9,12 @@ RUN apk add --no-cache openssl libc6-compat
 COPY package*.json ./
 RUN npm install
 
+# Copia el resto del código, incluyendo schema.prisma
 COPY . .
+
+# 👇 Genera el cliente Prisma antes de compilar
+RUN npx prisma generate
+
 RUN npm run build
 
 
@@ -25,6 +30,9 @@ COPY package*.json ./
 RUN npm install --only=production
 
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+COPY --from=builder /app/prisma ./prisma  
 
 EXPOSE 3000
 
