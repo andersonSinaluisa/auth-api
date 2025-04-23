@@ -1,7 +1,7 @@
 import { Permission, Prisma } from '@prisma/client';
-import { CreatePermissionDto } from 'src/permissions/dto/create-permission.dto';
-import { ReadPermissionDto } from 'src/permissions/dto/read-permission.dto';
-import { UpdatePermissionDto } from 'src/permissions/dto/update-permission.dto';
+import { CreatePermissionDto } from '../../../permissions/dto/create-permission.dto';
+import { ReadPermissionDto } from '../../../permissions/dto/read-permission.dto';
+import { UpdatePermissionDto } from '../../../permissions/dto/update-permission.dto';
 
 export class PermissionMapper {
   static toEntity(permission: CreatePermissionDto|UpdatePermissionDto) {

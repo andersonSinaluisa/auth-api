@@ -1,7 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { Permission, Prisma } from "@prisma/client";
-import { PrismaService } from "src/shared/prisma/prisma.service";
-import { PaginatedResult, PaginateFunction, paginator } from "src/shared/utils/pagination";
+import { PrismaService } from "../../shared/prisma/prisma.service";
+import { PaginatedResult, PaginateFunction, paginator } from "../../shared/utils/pagination";
+import { ReadPermissionDto } from "../dto/read-permission.dto";
 
 
 @Injectable()
@@ -25,7 +26,7 @@ export class PermissionRepository {
     }) {
         const paginate: PaginateFunction = paginator({ perPage: perPage });
 
-        const res = paginate(
+        const res = paginate<ReadPermissionDto,any>(
             this.prismaService.permission,
             {
                 where,

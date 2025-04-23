@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
-import { PrismaService } from "src/shared/prisma/prisma.service";
-import { PaginateFunction, paginator } from "src/shared/utils/pagination";
+import { PrismaService } from "../../shared/prisma/prisma.service";
+import { PaginateFunction, paginator } from "../../shared/utils/pagination";
 
 @Injectable()
 export class SessionRepository {

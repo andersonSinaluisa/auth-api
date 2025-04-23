@@ -1,17 +1,17 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { EventsService } from 'src/kafka/events.service';
-import { UsersService } from 'src/users/users.service';
+import { EventsService } from '../kafka/events.service';
+import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
-import { getUserLocation } from 'src/shared/utils/location';
-import { SessionsService } from 'src/sessions/sessions.service';
+import { getUserLocation } from '../shared/utils/location';
+import { SessionsService } from '../sessions/sessions.service';
 import { randomUUID } from 'crypto';
-import { SESSION_CREATED } from 'src/kafka/events';
+import { SESSION_CREATED } from '../kafka/events';
 import { Request } from 'express';
 import { Payload } from '@prisma/client/runtime/library';
 import { PayloadEntity } from './entities/Payload';
 import { BlacklistService } from './blacklist.service';
-import { getDeviceInfo } from 'src/shared/utils/device';
+import { getDeviceInfo } from '../shared/utils/device';
 
 @Injectable()
 export class AuthService {

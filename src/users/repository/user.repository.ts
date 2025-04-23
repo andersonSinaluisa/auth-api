@@ -5,7 +5,7 @@ import {
   PaginatedResult,
   PaginateFunction,
   paginator,
-} from 'src/shared/utils/pagination';
+} from '../../shared/utils/pagination';
 
 @Injectable()
 export class UserRepository {

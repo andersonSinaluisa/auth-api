@@ -3,13 +3,13 @@ import { UserRequest } from './dto/user.create.dto';
 import { UserRequestUpdate } from './dto/user.update.dto';
 import { UserRepository } from './repository/user.repository';
 import { UserMapper } from './entities/mappers/user.mapper';
-import { orderByFormat } from 'src/shared/utils/orderby-format';
-import { RoleRepository } from 'src/role/repository/role.repository';
-import { encryptPassword, generatePassword } from 'src/shared/utils/passwordGenerator';
+import { orderByFormat } from '../shared/utils/orderby-format';
+import { RoleRepository } from '../role/repository/role.repository';
+import { encryptPassword, generatePassword } from '../shared/utils/passwordGenerator';
 import { hash, randomInt } from 'crypto';
 import { createCipheriv, randomBytes, scrypt } from 'crypto';
-import { EventsService } from 'src/kafka/events.service';
-import { USER_CREATED, USER_DELETED, USER_STATUS_CHANGED } from 'src/kafka/events';
+import { EventsService } from '../kafka/events.service';
+import { USER_CREATED, USER_DELETED, USER_STATUS_CHANGED } from '../kafka/events';
 
 @Injectable()
 export class UsersService {

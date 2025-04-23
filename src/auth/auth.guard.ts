@@ -8,7 +8,7 @@ import { BlacklistService } from './blacklist.service';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from 'src/shared/decorators';
+import { IS_PUBLIC_KEY } from '../shared/decorators';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {

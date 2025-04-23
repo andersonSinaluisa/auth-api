@@ -2,12 +2,15 @@ import { Module } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { RoleController } from './role.controller';
 import { RoleRepository } from './repository/role.repository';
-import { SharedModule } from 'src/shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
+import { RoleCommand } from './role.commad';
+import { PermissionsModule } from '../permissions/permissions.module';
+import { PermissionsService } from '../permissions/permissions.service';
 
 @Module({
   controllers: [RoleController],
-  providers: [RoleService, RoleRepository],
-  exports: [RoleRepository],
-  imports: [SharedModule]
+  providers: [RoleRepository, RoleService ,PermissionsService, RoleCommand],
+  exports: [RoleRepository, RoleCommand],
+  imports: [SharedModule, PermissionsModule]
 })
 export class RoleModule { }

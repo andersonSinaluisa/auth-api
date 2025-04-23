@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, Role } from '@prisma/client';
-import { PrismaService } from 'src/shared/prisma/prisma.service';
+import { PrismaService } from '../../shared/prisma/prisma.service';
 import {
   PaginatedResult,
   PaginateFunction,
   paginator,
-} from 'src/shared/utils/pagination';
+} from '../../shared/utils/pagination';
 
 @Injectable()
 export class RoleRepository {

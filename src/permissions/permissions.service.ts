@@ -1,7 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { Prisma } from '@prisma/client';
-import { orderByFormat } from 'src/shared/utils/orderby-format';
+import { orderByFormat } from '../shared/utils/orderby-format';
 import { PermissionRepository } from './repository/permission.repository';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { PermissionMapper } from './entities/mappers/permission.mapper';

@@ -2,15 +2,16 @@ import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { UserRepository } from './repository/user.repository';
-import { SharedModule } from 'src/shared/shared.module';
-import { RoleModule } from 'src/role/role.module';
-import { RoleRepository } from 'src/role/repository/role.repository';
-import { KafkaModule } from 'src/kafka/kafka.module';
+import { SharedModule } from '../shared/shared.module';
+import { RoleModule } from '../role/role.module';
+import { RoleRepository } from '../role/repository/role.repository';
+import { KafkaModule } from '../kafka/kafka.module';
+import { SeedCommand } from './user.command';
 
 @Module({
   controllers: [UsersController],
-  providers: [UserRepository, UsersService, RoleRepository],
+  providers: [UserRepository, UsersService, RoleRepository, SeedCommand],
   imports: [KafkaModule, SharedModule, RoleModule, ],
-  exports: [UserRepository, UsersService],
+  exports: [UserRepository, UsersService, SeedCommand],
 })
 export class UsersModule { }

@@ -1,4 +1,4 @@
-import { UserResponseDto } from "src/users/dto/user.read.dto";
+import { UserResponseDto } from "../../users/dto/user.read.dto";
 
 
 export class SessionDto {

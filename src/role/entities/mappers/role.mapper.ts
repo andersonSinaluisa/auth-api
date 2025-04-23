@@ -1,7 +1,7 @@
 import { Prisma, Role } from '@prisma/client';
-import { CreateRoleDto } from 'src/role/dto/create-role.dto';
-import { ReadRoleDto } from 'src/role/dto/read-role.dto';
-import { UpdateRoleDto } from 'src/role/dto/update-role.dto';
+import { CreateRoleDto } from '../../../role/dto/create-role.dto';
+import { ReadRoleDto } from '../../../role/dto/read-role.dto';
+import { UpdateRoleDto } from '../../../role/dto/update-role.dto';
 
 export class RoleMapper {
   static toEntity(role: CreateRoleDto) {

@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
-import { SharedModule } from 'src/shared/shared.module';
-import { UsersModule } from 'src/users/users.module';
-import { KafkaModule } from 'src/kafka/kafka.module';
-import { SessionsModule } from 'src/sessions/sessions.module';
+import { SharedModule } from '../shared/shared.module';
+import { UsersModule } from '../users/users.module';
+import { KafkaModule } from '../kafka/kafka.module';
+import { SessionsModule } from '../sessions/sessions.module';
 import { BlacklistService } from './blacklist.service';
 
 @Module({

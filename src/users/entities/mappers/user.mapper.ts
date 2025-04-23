@@ -1,6 +1,6 @@
 import { Prisma, User } from '@prisma/client';
 import { UserRequest } from '../../dto/user.create.dto';
-import { UserResponseDto } from 'src/users/dto/user.read.dto';
+import { UserResponseDto } from '../../../users/dto/user.read.dto';
 import { DefaultArgs } from '@prisma/client/runtime/library';
 
 export class UserMapper {

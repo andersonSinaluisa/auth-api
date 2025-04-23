@@ -2,8 +2,8 @@ import { Body, Controller, Delete, Get, Param, Post, Req, Res } from '@nestjs/co
 import { Response, Request } from 'express';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
-import { SessionDto } from 'src/sessions/dto/session.dto';
-import { Public } from 'src/shared/decorators';
+import { SessionDto } from '../sessions/dto/session.dto';
+import { Public } from '../shared/decorators';
 import { VerifyDto } from './dto/verify.dto';
 @Public()
 @Controller('auth')

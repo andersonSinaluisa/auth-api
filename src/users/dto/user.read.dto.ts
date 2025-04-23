@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsDate, IsEmail, IsNumber, IsString } from 'class-validator';
-import { ReadRoleDto } from 'src/role/dto/read-role.dto';
+import { ReadRoleDto } from '../../role/dto/read-role.dto';
 export class UserResponseDto {
   @ApiProperty()
   @IsNumber()

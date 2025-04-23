@@ -3,7 +3,7 @@ import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { RoleRepository } from './repository/role.repository';
 import { RoleMapper } from './entities/mappers/role.mapper';
-import { orderByFormat } from 'src/shared/utils/orderby-format';
+import { orderByFormat } from '../shared/utils/orderby-format';
 
 @Injectable()
 export class RoleService {

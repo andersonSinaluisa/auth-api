@@ -1,4 +1,4 @@
-import { SessionDto } from "src/sessions/dto/session.dto";
+import { SessionDto } from "../../../sessions/dto/session.dto";
 
 
 export class SessionMapper {

@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { SessionRepository } from './repository/session.repository';
-import { orderByFormat } from 'src/shared/utils/orderby-format';
-import { EventsService } from 'src/kafka/events.service';
-import { SESSION_TERMINATED } from 'src/kafka/events';
+import { orderByFormat } from '../shared/utils/orderby-format';
+import { EventsService } from '../kafka/events.service';
+import { SESSION_TERMINATED } from '../kafka/events';
 import { Prisma } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import { SessionMapper } from './entities/mappers/session.mapper';
