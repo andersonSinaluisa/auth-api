@@ -6,12 +6,12 @@ import { SharedModule } from '../shared/shared.module';
 import { RoleModule } from '../role/role.module';
 import { RoleRepository } from '../role/repository/role.repository';
 import { KafkaModule } from '../kafka/kafka.module';
-import { SeedCommand } from './user.command';
+import { UserCommand } from './user.command';
 
 @Module({
   controllers: [UsersController],
-  providers: [UserRepository, UsersService, RoleRepository, SeedCommand],
+  providers: [UserRepository, UsersService, RoleRepository, UserCommand],
   imports: [KafkaModule, SharedModule, RoleModule, ],
-  exports: [UserRepository, UsersService, SeedCommand],
+  exports: [UserRepository, UsersService, UserCommand],
 })
 export class UsersModule { }

@@ -12,9 +12,6 @@ import { SessionsModule } from './sessions/sessions.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/auth.guard';
-import { PermissionCommand } from './permissions/permission.command';
-import { SeedCommand } from './users/user.command';
-import { RoleCommand } from './role/role.commad';
 
 @Module({
   imports: [

@@ -14,12 +14,10 @@ COPY . .
 
 # 👇 Genera el cliente Prisma antes de compilar
 RUN npx prisma generate
-
 RUN npm run build
 
-
 # Etapa 2: Imagen liviana para producción
-FROM node:18-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 
@@ -35,5 +33,7 @@ COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder /app/prisma ./prisma  
 
 EXPOSE 3000
+COPY run.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/run.sh
 
-CMD ["node", "dist/main"]
+ENTRYPOINT ["run.sh"]
