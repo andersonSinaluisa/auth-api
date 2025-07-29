@@ -8,6 +8,6 @@ import { AppCommand } from './app.command';
 @Module({
   controllers: [AppController],
   providers: [AppService, AppRepository, AppCommand],
-  imports:[SharedModule]
+  imports: [SharedModule],
 })
-export class AppModule { }
+export class AppModule {}

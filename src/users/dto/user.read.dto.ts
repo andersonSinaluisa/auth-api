@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsDate, IsEmail, IsNumber, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsDate,
+  IsEmail,
+  IsNumber,
+  IsString,
+} from 'class-validator';
 import { ReadRoleDto } from '../../role/dto/read-role.dto';
 export class UserResponseDto {
   @ApiProperty()
@@ -36,7 +42,7 @@ export class UserResponseDto {
 
   @IsNumber()
   @ApiProperty()
-  role_id: number; 
+  role_id: number;
 
   @IsDate()
   @ApiProperty()
@@ -46,7 +52,6 @@ export class UserResponseDto {
   @ApiProperty()
   is_active: boolean;
 
-
   @ApiProperty()
-  role?: ReadRoleDto
+  role?: ReadRoleDto;
 }

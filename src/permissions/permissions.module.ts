@@ -9,6 +9,6 @@ import { PermissionCommand } from './permission.command';
   controllers: [PermissionsController],
   providers: [PermissionRepository, PermissionsService, PermissionCommand],
   imports: [SharedModule],
-  exports: [PermissionRepository, PermissionsService]
+  exports: [PermissionRepository, PermissionsService],
 })
 export class PermissionsModule {}

@@ -4,18 +4,18 @@ import { ReadPermissionDto } from '../../../permissions/dto/read-permission.dto'
 import { UpdatePermissionDto } from '../../../permissions/dto/update-permission.dto';
 
 export class PermissionMapper {
-  static toEntity(permission: CreatePermissionDto|UpdatePermissionDto) {
+  static toEntity(permission: CreatePermissionDto | UpdatePermissionDto) {
     return {
       code: permission.code,
       name: permission.name,
       description: permission.description,
       createdAt: new Date(),
       updatedAt: new Date(),
-      app:{
+      app: {
         connect: {
-          id: permission.appId
-        }
-      }
+          id: permission.appId,
+        },
+      },
     } as Prisma.PermissionCreateInput;
   }
 
@@ -27,14 +27,14 @@ export class PermissionMapper {
       code: permission.code,
       createdAt: permission.createdAt,
       updatedAt: permission.updatedAt,
-      app:{
+      app: {
         createdAt: permission.app.createdAt,
         description: permission.app.description,
         id: permission.app.id,
         name: permission.app.name,
         updatedAt: permission.app.updatedAt,
-        url: permission.app.url
-      }
+        url: permission.app.url,
+      },
     } as ReadPermissionDto;
   }
 }

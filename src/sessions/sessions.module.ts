@@ -8,12 +8,8 @@ import { KafkaModule } from '../kafka/kafka.module';
 import { SharedModule } from '../shared/shared.module';
 
 @Module({
-  imports: [
-    SharedModule,
-    UsersModule,
-    KafkaModule,
-  ],
-  providers:[SessionRepository,SessionsService],
+  imports: [SharedModule, UsersModule, KafkaModule],
+  providers: [SessionRepository, SessionsService],
   controllers: [SessionsController],
   exports: [SessionsService],
 })

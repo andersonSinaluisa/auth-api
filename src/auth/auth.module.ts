@@ -9,7 +9,7 @@ import { SessionsModule } from '../sessions/sessions.module';
 import { BlacklistService } from './blacklist.service';
 
 @Module({
-  imports:[
+  imports: [
     SharedModule,
     KafkaModule,
     UsersModule,
@@ -22,6 +22,6 @@ import { BlacklistService } from './blacklist.service';
   ],
   providers: [AuthService, BlacklistService],
   controllers: [AuthController],
-  exports:[BlacklistService]
+  exports: [BlacklistService],
 })
-export class AuthModule { }
+export class AuthModule {}

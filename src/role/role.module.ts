@@ -9,8 +9,8 @@ import { PermissionsService } from '../permissions/permissions.service';
 
 @Module({
   controllers: [RoleController],
-  providers: [RoleRepository, RoleService ,PermissionsService, RoleCommand],
+  providers: [RoleRepository, RoleService, PermissionsService, RoleCommand],
   exports: [RoleRepository, RoleCommand],
-  imports: [SharedModule, PermissionsModule]
+  imports: [SharedModule, PermissionsModule],
 })
-export class RoleModule { }
+export class RoleModule {}

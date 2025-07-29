@@ -14,11 +14,11 @@ describe('PermissionsController', () => {
     controller = module.get<PermissionsController>(PermissionsController);
   });
 
-  it('should be defined', async() => {
+  it('should be defined', async () => {
     const res = await controller.create({
       name: 'test',
-      code: 'test'
-    })
+      code: 'test',
+    });
     expect(res).toBeDefined();
   });
 });

@@ -11,7 +11,7 @@ import { UserCommand } from './user.command';
 @Module({
   controllers: [UsersController],
   providers: [UserRepository, UsersService, RoleRepository, UserCommand],
-  imports: [KafkaModule, SharedModule, RoleModule, ],
+  imports: [KafkaModule, SharedModule, RoleModule],
   exports: [UserRepository, UsersService, UserCommand],
 })
-export class UsersModule { }
+export class UsersModule {}

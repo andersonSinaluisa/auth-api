@@ -1,1 +1,1 @@
-export class Permission { }
+export class Permission {}

@@ -7,39 +7,45 @@ import { UpdatePermissionDto } from './dto/update-permission.dto';
 
 @Injectable()
 export class PermissionsService {
-  constructor(private readonly repository: PermissionRepository) { }
-  async create(createPermissionDto: CreatePermissionDto) {
-
-    
+  constructor(private readonly repository: PermissionRepository) {}
+  async create(createPermissionDto: CreatePermissionDto, tenantId: string) {
     const exist = await this.repository.findMany({
-      where:{
+      where: {
         name: createPermissionDto.name,
         deleted: false,
-        appId: createPermissionDto.appId
-      }
-    })
-    if(exist.data.length > 0){
-      throw new BadRequestException('Ya existe un permiso con ese nombre para esa aplicación',{
-        cause: new Error('Ya existe un permiso con ese nombre para esa aplicación'),
-        description: 'name'
-      });
+        appId: createPermissionDto.appId,
+      },
+    });
+    if (exist.data.length > 0) {
+      throw new BadRequestException(
+        'Ya existe un permiso con ese nombre para esa aplicación',
+        {
+          cause: new Error(
+            'Ya existe un permiso con ese nombre para esa aplicación',
+          ),
+          description: 'name',
+        },
+      );
     }
 
     const existCode = await this.repository.findMany({
-      where:{
+      where: {
         code: createPermissionDto.code,
         deleted: false,
-      }
-    })
+      },
+    });
 
-    if(existCode.data.length > 0){
-      throw new BadRequestException('Ya existe un permiso con ese código',{
+    if (existCode.data.length > 0) {
+      throw new BadRequestException('Ya existe un permiso con ese código', {
         cause: new Error('Ya existe un permiso con ese código'),
-        description: 'code'
+        description: 'code',
       });
     }
 
-    return await this.repository.create(PermissionMapper.toEntity(createPermissionDto));
+    return await this.repository.create(
+      PermissionMapper.toEntity(createPermissionDto),
+      tenantId,
+    );
   }
 
   findAll(
@@ -47,15 +53,19 @@ export class PermissionsService {
     perPage: number,
     search?: string,
     orderBy?: string[],
+    tenantId?: string,
   ) {
     return this.repository.findMany({
       page,
       perPage,
       orderBy: {
-        name: orderBy !=undefined? orderByFormat(orderBy, 'name'):undefined,
+        name: orderBy != undefined ? orderByFormat(orderBy, 'name') : undefined,
         code: orderBy != undefined ? orderByFormat(orderBy, 'code') : undefined,
         id: orderBy != undefined ? orderByFormat(orderBy, 'id') : undefined,
-        createdAt: orderBy != undefined  ? orderByFormat(orderBy, 'createdAt') : undefined,
+        createdAt:
+          orderBy != undefined
+            ? orderByFormat(orderBy, 'createdAt')
+            : undefined,
       },
       where: search
         ? {
@@ -71,76 +81,87 @@ export class PermissionsService {
                 },
               },
             ],
-            AND:{
-              deleted: false
-            }
+            AND: {
+              deleted: false,
+              tenantId: tenantId ? tenantId : undefined,
+            },
           }
-       :  {
-          deleted: false
-       },
+        : {
+            deleted: false,
+          },
     });
   }
 
-  findOne(id: number) {
-   
-    return this.repository.findOne(id);
+  findOne(id: number, tenantId: string) {
+    return this.repository.findOne(id, tenantId);
   }
 
-  async update(id: number, updatePermissionDto: UpdatePermissionDto) {
+  async update(
+    id: number,
+    updatePermissionDto: UpdatePermissionDto,
+    tenantId: string,
+  ) {
     const exist = await this.repository.findMany({
-      where:{
+      where: {
         id: id,
-        deleted: false
-      }
-    })
-    if(exist.data.length == 0){
-      throw new BadRequestException('No existe el permiso',{
+        deleted: false,
+        tenantId: tenantId,
+      },
+    });
+    if (exist.data.length == 0) {
+      throw new BadRequestException('No existe el permiso', {
         cause: new Error('No existe el permiso'),
-        description: 'id'
+        description: 'id',
       });
     }
 
     const verification = await this.repository.findMany({
-      where:{
+      where: {
         deleted: false,
-        NOT:{
-          id: id
+        NOT: {
+          id: id,
         },
-        OR:[
+        OR: [
           {
             name: updatePermissionDto.name.toString(),
-            appId: updatePermissionDto.appId
+            appId: updatePermissionDto.appId,
           },
           {
-            code: updatePermissionDto.code.toString()
-          }
-        ]
-      }
-    })
+            code: updatePermissionDto.code.toString(),
+          },
+        ],
+      },
+    });
 
     if (verification.data.length > 0) {
-      throw new BadRequestException('Ya existe un permiso con ese nombre o código para esa aplicación', {
-        cause: new Error('Ya existe un permiso con ese nombre o código para esa aplicación'),
-        description: 'name'
-      });
+      throw new BadRequestException(
+        'Ya existe un permiso con ese nombre o código para esa aplicación',
+        {
+          cause: new Error(
+            'Ya existe un permiso con ese nombre o código para esa aplicación',
+          ),
+          description: 'name',
+        },
+      );
     }
-    
-    
-    
 
-    return this.repository.update(id, {
-      name: updatePermissionDto.name,
-      code: updatePermissionDto.code,
-      description: updatePermissionDto.description,
-      app: {
-        connect:  {
-          id: updatePermissionDto.appId
-        }
-      }
-    });
+    return this.repository.update(
+      id,
+      {
+        name: updatePermissionDto.name,
+        code: updatePermissionDto.code,
+        description: updatePermissionDto.description,
+        app: {
+          connect: {
+            id: updatePermissionDto.appId,
+          },
+        },
+      },
+      tenantId,
+    );
   }
 
-  remove(id: number) {
-    return this.repository.remove(id);
+  remove(id: number, tenantId: string) {
+    return this.repository.remove(id, tenantId);
   }
 }
