@@ -50,7 +50,7 @@ export class UserMapper {
         name: user.role instanceof Object ? user.role.name : null,
         permissions: user.role instanceof Object ? user.role.permissions : null,
         updatedAt: user.role instanceof Object ? user.role.updatedAt : null,
-      },
+      }
     };
   }
 

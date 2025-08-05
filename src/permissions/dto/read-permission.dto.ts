@@ -15,12 +15,12 @@ export class ReadPermissionDto {
   appId: number;
   @IsString()
   description: string;
-  app?: {
-    id: number;
-    name: string;
-    description: string;
-    url: string;
-    createdAt: Date;
-    updatedAt;
-  };
+  app?:{
+    id:number;
+    name:string;
+    description:string;
+    url:string;
+    createdAt:Date;
+    updatedAt 
+  }
 }

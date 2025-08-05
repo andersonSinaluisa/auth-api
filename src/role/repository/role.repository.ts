@@ -9,24 +9,20 @@ import {
 
 @Injectable()
 export class RoleRepository {
-  constructor(private prismaService: PrismaService) {}
+  constructor(private prismaService: PrismaService) { }
 
-  // Crear un rol con tenantId
-  async create(role: Prisma.RoleUncheckedCreateInput, tenantId: string) {
+  // Create a new role
+  async create(role: Prisma.RoleUncheckedCreateInput) {
     const newRole = await this.prismaService.role.create({
-      data: {
-        ...role,
-        tenantId,
-      },
+      data: role
     });
     return newRole;
   }
 
-  async findAll(tenantId: string) {
+  async findAll() {
     const roles = await this.prismaService.role.findMany({
       where: {
-        tenantId,
-        deleted: false,
+        deleted: false
       },
       include: {
         permissions: true,
@@ -36,32 +32,27 @@ export class RoleRepository {
   }
 
   async findMany({
-    tenantId,
     where,
     orderBy,
     page,
     perPage = 10,
   }: {
-    tenantId: string;
     where?: Prisma.RoleWhereInput;
     orderBy?: Prisma.RoleOrderByWithRelationInput;
     page?: number;
     perPage?: number;
   }): Promise<PaginatedResult<Role>> {
-    const paginate: PaginateFunction = paginator({ perPage });
+    const paginate: PaginateFunction = paginator({ perPage: perPage });
 
     return paginate(
       this.prismaService.role,
       {
-        where: {
-          ...where,
-          tenantId,
-          deleted: false,
-        },
+        where,
         orderBy,
         include: {
           permissions: true,
         },
+
       },
       {
         page,
@@ -69,46 +60,34 @@ export class RoleRepository {
     );
   }
 
-  async findOne(id: number, tenantId: string) {
-    const role = await this.prismaService.role.findFirst({
+  async findOne(id: number) {
+    const role = await this.prismaService.role.findUnique({
       where: {
         id,
-        tenantId,
-        deleted: false,
+        deleted: false
       },
-      include: {
-        permissions: true,
-      },
+      include:{
+        permissions: true
+      }
     });
     return role;
   }
 
-  async update(
-    id: number,
-    role: Prisma.RoleUncheckedUpdateInput,
-    tenantId: string,
-  ) {
-    // Verificamos existencia y pertenencia
-    const existing = await this.prismaService.role.findFirst({
-      where: { id, tenantId, deleted: false },
-    });
-    if (!existing) return null;
-
+  async update(id: number, role: Prisma.RoleUncheckedUpdateInput) {
     const updatedRole = await this.prismaService.role.update({
-      where: { id },
+      where: {
+        id,
+      },
       data: role,
     });
     return updatedRole;
   }
 
-  async remove(id: number, tenantId: string) {
-    const existing = await this.prismaService.role.findFirst({
-      where: { id, tenantId, deleted: false },
-    });
-    if (!existing) return null;
-
+  async remove(id: number) {
     const role = await this.prismaService.role.update({
-      where: { id },
+      where: {
+        id,
+      },
       data: {
         deletedAt: new Date(),
         deleted: true,

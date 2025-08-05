@@ -8,19 +8,18 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { Payload } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { RoleService } from './role.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
-import { Tenant } from 'src/shared/decorators/tenant.decorator';
 
 @Controller('roles')
 export class RoleController {
-  constructor(private readonly roleService: RoleService) {}
+  constructor(private readonly roleService: RoleService) { }
 
   @Post()
-  create(@Payload() createRoleDto: CreateRoleDto, @Tenant() tenantId: string) {
-    return this.roleService.create(createRoleDto, tenantId);
+  create(@Payload() createRoleDto: CreateRoleDto) {
+    return this.roleService.create(createRoleDto);
   }
 
   @Get()
@@ -29,31 +28,29 @@ export class RoleController {
     @Query('perPage') perPage: number,
     @Query('search') search: string,
     @Query('orderBy') orderBy: string[],
-    @Tenant() tenantId: string,
   ) {
-    return this.roleService.findAll(page, perPage, search, orderBy, tenantId);
+    return this.roleService.findAll(page, perPage, search, orderBy);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number, @Tenant() tenantId: string) {
+  findOne(@Param('id') id: number) {
     const _id = parseInt(id.toString());
-    return this.roleService.findOne(_id, tenantId);
+    return this.roleService.findOne(_id);
   }
 
   @Patch(':id')
   update(
-    @Body() updateRoleDto: UpdateRoleDto,
-    @Param('id') id: number,
-    @Tenant() tenantId: string,
+    @Body()  updateRoleDto: UpdateRoleDto,
+    @Param('id')id: number,
   ) {
     const _id = parseInt(id.toString());
 
-    return this.roleService.update(_id, updateRoleDto, tenantId);
+    return this.roleService.update(_id, updateRoleDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number, @Tenant() tenantId: string) {
+  remove( @Param('id') id: number) {
     const _id = parseInt(id.toString());
-    return this.roleService.remove(_id, tenantId);
+    return this.roleService.remove(_id);
   }
 }

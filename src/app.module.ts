@@ -15,23 +15,16 @@ import { JwtAuthGuard } from './auth/auth.guard';
 
 @Module({
   imports: [
-    UsersModule,
-    SharedModule,
-    RoleModule,
-    PermissionsModule,
-    App,
-    KafkaModule,
-    SessionsModule,
-    AuthModule,
+    UsersModule, SharedModule, RoleModule, 
+    PermissionsModule, App, KafkaModule, 
+    SessionsModule, AuthModule
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    PrismaService,
+  providers: [AppService, PrismaService,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

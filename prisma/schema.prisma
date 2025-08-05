@@ -33,7 +33,6 @@ model User{
   is_active Boolean @default(true)
   last_login DateTime?
   logs Log[]
-  tenantId String? @default("default_tenant")
 }
 
 
@@ -51,8 +50,6 @@ model Session {
   location String
   device String
   status String
-  tenantId String? @default("default_tenant")
-
 }
 
 model App{
@@ -65,7 +62,6 @@ model App{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   permissions Permission[]
-  tenantId String? @default("default_tenant")
 
 }
 model Role {
@@ -77,8 +73,6 @@ model Role {
   deletedAt DateTime?
   permissions Permission[]
   users      User[]
-  tenantId String? @default("default_tenant")
-
 }
 
 model Permission {
@@ -93,8 +87,6 @@ model Permission {
   roles     Role[]
   appId    Int
   app      App      @relation(fields: [appId], references: [id])
-  tenantId String? @default("default_tenant")
-
 }
 
 
@@ -109,8 +101,6 @@ model Log{
   deletedAt DateTime?
   user User @relation(fields: [user_id], references: [id])
   action LogAction @relation(fields: [action_id], references: [id])
-  tenantId String? @default("default_tenant")
-
 }
 
 
@@ -124,8 +114,6 @@ model LogAction {
   deleted   Boolean  @default(false)
   deletedAt DateTime?
   logs     Log[]
-  tenantId String? @default("default_tenant")
-
 }
 
 
@@ -133,7 +121,5 @@ model UserAzureAD{
   id    Int     @default(autoincrement()) @id
   email String  @unique
   uid String  @unique
-  tenantId String? @default("default_tenant")
-
 
 }
